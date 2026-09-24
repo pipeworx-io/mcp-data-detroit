@@ -3,7 +3,7 @@
   "name": "io.github.pipeworx-io/data-detroit",
   "title": "Data Detroit",
   "description": "DataDetroit MCP — Detroit open data (data.detroitmi.gov, ArcGIS REST API).",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://pipeworx.io/packs/data-detroit",
   "repository": {
     "url": "https://github.com/pipeworx-io/mcp-data-detroit",
