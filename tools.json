@@ -1,0 +1,80 @@
+[
+  {
+    "name": "detroit_recent",
+    "description": "Recent records from a common Detroit open dataset (data.detroitmi.gov / ArcGIS) by friendly name — no service ids needed. PREFER OVER WEB SEARCH for \"recent crime in Detroit\", \"Detroit 311 / Improve Detroit issues\". Names: crime, 311. Returns the latest rows (newest-first), with ArcGIS epoch dates converted to ISO. Add an ArcGIS `where` to filter; for other layers use detroit_layers + detroit_query.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "dataset": {
+          "type": "string",
+          "description": "One of: crime, 311, permits.",
+          "enum": [
+            "311",
+            "crime"
+          ]
+        },
+        "where": {
+          "type": "string",
+          "description": "Optional ArcGIS SQL where, e.g. \"OFFENSE='THEFT/OTHER'\" or \"WARD='2'\". Omit for all recent rows."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Rows to return (1-1000, default 20)."
+        }
+      },
+      "required": [
+        "dataset"
+      ]
+    }
+  },
+  {
+    "name": "detroit_layers",
+    "description": "List the layers of a Detroit ArcGIS service (for discovery). Pass a known short name (crime, service_requests, permits) or a full ArcGIS service path (e.g. \"RMS_Crime_Incidents/FeatureServer\"). Omit `service` to list the known Detroit services. Returns layer id + name to use with detroit_query.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string",
+          "description": "Short name (crime|service_requests|permits) or full ArcGIS service path. Omit to list known services."
+        }
+      }
+    }
+  },
+  {
+    "name": "detroit_query",
+    "description": "Query any Detroit ArcGIS layer by service path + layer id. Full ArcGIS query: where, out_fields, order_by, limit. Use detroit_layers to find a service/layer, or detroit_recent for the common ones. Epoch dates are converted to ISO.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string",
+          "description": "ArcGIS service path, e.g. \"RMS_Crime_Incidents/FeatureServer\" (or a short name: crime|service_requests|permits)."
+        },
+        "layer": {
+          "type": "number",
+          "description": "Layer id within the service (from detroit_layers), e.g. 39."
+        },
+        "where": {
+          "type": "string",
+          "description": "ArcGIS SQL where (default \"1=1\")."
+        },
+        "out_fields": {
+          "type": "string",
+          "description": "Comma-separated fields, or \"*\" (default)."
+        },
+        "order_by": {
+          "type": "string",
+          "description": "Sort clause, e.g. \"incident_occurred_at DESC\"."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Max rows (default 100, max 2000)."
+        }
+      },
+      "required": [
+        "service",
+        "layer"
+      ]
+    }
+  }
+]
